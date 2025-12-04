@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import api from '../../lib/api'
 import { useAuth } from '../../context/AuthContext'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts'
 import { Users, FileText, TrendingUp, AlertCircle, Download } from 'lucide-react'
@@ -24,14 +24,10 @@ export default function EnterpriseDashboard() {
         const fetchStats = async () => {
             try {
                 // Fetch clients count
-                const clientsRes = await axios.get('http://localhost:3001/api/clients', {
-                    headers: { Authorization: `Bearer ${user.token}` }
-                })
+                const clientsRes = await api.get('/api/clients')
 
                 // Fetch invoices for revenue calc
-                const invoicesRes = await axios.get('http://localhost:3001/api/invoices', {
-                    headers: { Authorization: `Bearer ${user.token}` }
-                })
+                const invoicesRes = await api.get('/api/invoices')
 
                 const invoices = invoicesRes.data
                 const totalRevenue = invoices

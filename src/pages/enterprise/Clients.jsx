@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import api from '../../lib/api'
 import { useAuth } from '../../context/AuthContext'
 import { Plus, Search, Mail, Phone, MapPin, Trash2, Edit } from 'lucide-react'
 import Modal from '../../components/ui/Modal'
@@ -15,9 +15,7 @@ export default function EnterpriseClients() {
     useEffect(() => {
         const fetchClients = async () => {
             try {
-                const res = await axios.get('http://localhost:3001/api/clients', {
-                    headers: { Authorization: `Bearer ${user.token}` }
-                })
+                const res = await api.get('/api/clients')
                 setClients(res.data)
             } catch (err) {
                 console.error(err)
@@ -29,13 +27,9 @@ export default function EnterpriseClients() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            await axios.post('http://localhost:3001/api/clients', formData, {
-                headers: { Authorization: `Bearer ${user.token}` }
-            })
+            await api.post('/api/clients', formData)
             setShowModal(false)
-            const res = await axios.get('http://localhost:3001/api/clients', {
-                headers: { Authorization: `Bearer ${user.token}` }
-            })
+            const res = await api.get('/api/clients')
             setClients(res.data)
             setFormData({ name: '', email: '', phone: '', address: '', gstin: '' })
         } catch (err) {
@@ -46,12 +40,8 @@ export default function EnterpriseClients() {
     const handleDelete = async (id) => {
         if (!confirm('Delete client?')) return
         try {
-            await axios.delete(`http://localhost:3001/api/clients/${id}`, {
-                headers: { Authorization: `Bearer ${user.token}` }
-            })
-            const res = await axios.get('http://localhost:3001/api/clients', {
-                headers: { Authorization: `Bearer ${user.token}` }
-            })
+            await api.delete(`/api/clients/${id}`)
+            const res = await api.get('/api/clients')
             setClients(res.data)
         } catch (err) {
             console.error(err)

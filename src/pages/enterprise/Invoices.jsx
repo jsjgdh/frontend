@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import api from '../../lib/api'
 import { useAuth } from '../../context/AuthContext'
 import { Plus, FileText, Download, Trash2, Eye } from 'lucide-react'
 import Modal from '../../components/ui/Modal'
@@ -26,9 +26,7 @@ export default function EnterpriseInvoices() {
     useEffect(() => {
         const fetchInvoices = async () => {
             try {
-                const res = await axios.get('http://localhost:3001/api/invoices', {
-                    headers: { Authorization: `Bearer ${user.token}` }
-                })
+                const res = await api.get('/api/invoices')
                 setInvoices(res.data)
             } catch (err) {
                 console.error(err)
@@ -36,9 +34,7 @@ export default function EnterpriseInvoices() {
         }
         const fetchClients = async () => {
             try {
-                const res = await axios.get('http://localhost:3001/api/clients', {
-                    headers: { Authorization: `Bearer ${user.token}` }
-                })
+                const res = await api.get('/api/clients')
                 setClients(res.data)
             } catch (err) {
                 console.error(err)
@@ -66,13 +62,9 @@ export default function EnterpriseInvoices() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            await axios.post('http://localhost:3001/api/invoices', formData, {
-                headers: { Authorization: `Bearer ${user.token}` }
-            })
+            await api.post('/api/invoices', formData)
             setShowModal(false)
-            const res = await axios.get('http://localhost:3001/api/invoices', {
-                headers: { Authorization: `Bearer ${user.token}` }
-            })
+            const res = await api.get('/api/invoices')
             setInvoices(res.data)
             setFormData({
                 client_id: '',

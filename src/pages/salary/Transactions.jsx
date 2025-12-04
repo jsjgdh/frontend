@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import api from '../../lib/api'
 import { useAuth } from '../../context/AuthContext'
 import { Plus, Search, Filter, Trash2, X, Check, Calendar, AlertTriangle } from 'lucide-react'
 import Modal from '../../components/ui/Modal'
@@ -47,9 +47,7 @@ export default function SalaryTransactions() {
             if (filters.startDate) params.append('from', filters.startDate)
             if (filters.endDate) params.append('to', filters.endDate)
 
-            const res = await axios.get(`http://localhost:3001/api/transactions?${params.toString()}`, {
-                headers: { Authorization: `Bearer ${user.token}` }
-            })
+            const res = await api.get(`/api/transactions?${params.toString()}`)
             setTransactions(res.data)
         } catch (err) {
             console.error(err)
@@ -80,9 +78,7 @@ export default function SalaryTransactions() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            await axios.post('http://localhost:3001/api/transactions', formData, {
-                headers: { Authorization: `Bearer ${user.token}` }
-            })
+            await api.post('/api/transactions', formData)
             setShowModal(false)
             setShowModal(false)
             fetchTransactions()
@@ -98,9 +94,7 @@ export default function SalaryTransactions() {
         console.log('Deleting transaction:', deleteId)
         setIsLoading(true)
         try {
-            await axios.delete(`http://localhost:3001/api/transactions/${deleteId}`, {
-                headers: { Authorization: `Bearer ${user.token}` }
-            })
+            await api.delete(`/api/transactions/${deleteId}`)
             console.log('Delete successful')
             setDeleteId(null)
             // Force refresh with timestamp to avoid cache
@@ -111,9 +105,7 @@ export default function SalaryTransactions() {
             if (filters.endDate) params.append('to', filters.endDate)
             params.append('_t', Date.now())
 
-            const res = await axios.get(`http://localhost:3001/api/transactions?${params.toString()}`, {
-                headers: { Authorization: `Bearer ${user.token}` }
-            })
+            const res = await api.get(`/api/transactions?${params.toString()}`)
             setTransactions(res.data)
         } catch (err) {
             console.error('Delete failed:', err)

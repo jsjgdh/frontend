@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import api from '../../lib/api'
 import { useAuth } from '../../context/AuthContext'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts'
 import { TrendingUp, FileText, DollarSign, Clock } from 'lucide-react'
@@ -18,12 +18,8 @@ export default function Reports() {
         const fetchData = async () => {
             try {
                 const [invoicesRes, clientsRes] = await Promise.all([
-                    axios.get('http://localhost:3001/api/invoices', {
-                        headers: { Authorization: `Bearer ${user.token}` }
-                    }),
-                    axios.get('http://localhost:3001/api/clients', {
-                        headers: { Authorization: `Bearer ${user.token}` }
-                    })
+                    api.get('/api/invoices'),
+                    api.get('/api/clients')
                 ])
 
                 // Calculate monthly revenue from invoices

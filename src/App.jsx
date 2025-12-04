@@ -6,6 +6,7 @@ import EnterpriseLayout from './layouts/EnterpriseLayout'
 import SelfEmployedLayout from './layouts/SelfEmployedLayout'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Health from './pages/Health'
 
 import SalaryDashboard from './pages/salary/Dashboard'
 
@@ -39,6 +40,7 @@ export default function App() {
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/health" element={<Health />} />
           </Route>
 
           <Route path="/salary" element={

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../lib/api'
 import { useAuth } from '../context/AuthContext'
 import { X, FileText, Table, Download, Loader2 } from 'lucide-react'
 import Button from './ui/Button'
@@ -17,16 +17,13 @@ export default function ExportModal({ open, onClose }) {
     const handleExport = async () => {
         try {
             setLoading(true)
-            const response = await axios.post('http://localhost:3001/api/export', {
+            const response = await api.post('/api/export', {
                 format,
                 type,
                 startDate,
                 endDate,
                 includeSensitive
-            }, {
-                headers: { Authorization: `Bearer ${user.token}` },
-                responseType: 'blob'
-            })
+            }, { responseType: 'blob' })
 
             // Create download link
             const url = window.URL.createObjectURL(new Blob([response.data]))

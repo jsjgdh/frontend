@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import api from '../../lib/api'
 import { useAuth } from '../../context/AuthContext'
 import { Plus, Trash2 } from 'lucide-react'
 import Modal from '../../components/ui/Modal'
@@ -20,9 +20,7 @@ export default function SalaryBudgets() {
     useEffect(() => {
         const fetchBudgets = async () => {
             try {
-                const res = await axios.get('http://localhost:3001/api/budgets', {
-                    headers: { Authorization: `Bearer ${user.token}` }
-                })
+                const res = await api.get('/api/budgets')
                 setBudgets(res.data)
             } catch (err) {
                 console.error(err)
@@ -34,13 +32,9 @@ export default function SalaryBudgets() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            await axios.post('http://localhost:3001/api/budgets', formData, {
-                headers: { Authorization: `Bearer ${user.token}` }
-            })
+            await api.post('/api/budgets', formData)
             setShowModal(false)
-            const res = await axios.get('http://localhost:3001/api/budgets', {
-                headers: { Authorization: `Bearer ${user.token}` }
-            })
+            const res = await api.get('/api/budgets')
             setBudgets(res.data)
             setFormData({ ...formData, target: '', notes: '' })
         } catch (err) {

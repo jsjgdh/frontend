@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import api from '../../lib/api'
 import { useAuth } from '../../context/AuthContext'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { Wallet, Briefcase, ArrowUpRight, ArrowDownRight, Download } from 'lucide-react'
@@ -16,9 +16,7 @@ export default function SelfEmployedDashboard() {
         const fetchData = async () => {
             try {
                 // Fetch personal finance snapshot
-                const res = await axios.get('http://localhost:3001/api/dashboard', {
-                    headers: { Authorization: `Bearer ${user.token}` }
-                })
+                const res = await api.get('/api/dashboard')
                 setData(res.data)
             } catch (err) {
                 console.error(err)
